@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Descarga de Archivo - Solo para Windows</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            color: #f1f1f1;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 800px;
+            width: 100%;
+            background-color: rgba(255, 255, 255, 0.08);
+            border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
+            overflow: hidden;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .header {
+            background: linear-gradient(to right, #0ea5e9, #3b82f6);
+            padding: 30px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            text-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+        }
+        
+        .header p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+        
+        .windows-icon {
+            font-size: 4rem;
+            margin-bottom: 15px;
+            color: #00adef;
+            text-shadow: 0 0 15px rgba(0, 173, 239, 0.5);
+        }
+        
+        .content {
+            padding: 40px;
+        }
+        
+        .question-box {
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 30px;
+            border-left: 5px solid #3b82f6;
+        }
+        
+        .question {
+            font-size: 1.5rem;
+            margin-bottom: 25px;
+            color: #f8fafc;
+            line-height: 1.4;
+        }
+        
+        .options {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            flex-wrap: wrap;
+        }
+        
+        .btn {
+            padding: 18px 40px;
+            font-size: 1.3rem;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            min-width: 180px;
+        }
+        
+        .btn-yes {
+            background: linear-gradient(to right, #10b981, #34d399);
+            color: white;
+            box-shadow: 0 5px 15px rgba(16, 185, 129, 0.4);
+        }
+        
+        .btn-yes:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(16, 185, 129, 0.6);
+        }
+        
+        .btn-no {
+            background: linear-gradient(to right, #ef4444, #f87171);
+            color: white;
+            box-shadow: 0 5px 15px rgba(239, 68, 68, 0.4);
+        }
+        
+        .btn-no:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(239, 68, 68, 0.6);
+        }
+        
+        .download-section {
+            display: none;
+            text-align: center;
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 30px;
+            margin-top: 30px;
+            animation: fadeIn 0.8s ease;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .download-icon {
+            font-size: 4rem;
+            color: #10b981;
+            margin-bottom: 20px;
+        }
+        
+        .download-title {
+            font-size: 1.8rem;
+            margin-bottom: 15px;
+            color: #f8fafc;
+        }
+        
+        .download-description {
+            font-size: 1.1rem;
+            margin-bottom: 25px;
+            line-height: 1.5;
+            opacity: 0.9;
+        }
+        
+        .download-btn {
+            display: inline-block;
+            background: linear-gradient(to right, #3b82f6, #0ea5e9);
+            color: white;
+            padding: 18px 40px;
+            font-size: 1.3rem;
+            border-radius: 12px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(59, 130, 246, 0.5);
+        }
+        
+        .download-btn:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(59, 130, 246, 0.7);
+        }
+        
+        .windows-warning {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 20px;
+            padding: 15px;
+            background-color: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+            font-size: 0.95rem;
+        }
+        
+        .footer {
+            text-align: center;
+            padding: 20px;
+            font-size: 0.9rem;
+            opacity: 0.7;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2rem;
+            }
+            
+            .content {
+                padding: 25px;
+            }
+            
+            .btn {
+                padding: 15px 30px;
+                font-size: 1.1rem;
+                min-width: 140px;
+            }
+            
+            .question {
+                font-size: 1.3rem;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .options {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .btn {
+                width: 100%;
+                max-width: 280px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="windows-icon">
+                <i class="fab fa-windows"></i>
+            </div>
+            <h1>Archivo de Configuración para Windows</h1>
+            <p>Utilidad para optimización y configuración del sistema</p>
+        </div>
+        
+        <div class="content">
+            <div class="question-box">
+                <h2 class="question">¿Le gustaría descargar un archivo de configuración .bat para Windows que optimiza el rendimiento del sistema?</h2>
+                
+                <div class="options">
+                    <button class="btn btn-yes" id="yes-btn">
+                        <i class="fas fa-check-circle"></i> Sí, descargar
+                    </button>
+                    <button class="btn btn-no" id="no-btn">
+                        <i class="fas fa-times-circle"></i> No, gracias
+                    </button>
+                </div>
+            </div>
+            
+            <div class="download-section" id="download-section">
+                <div class="download-icon">
+                    <i class="fas fa-file-download"></i>
+                </div>
+                <h3 class="download-title">Descarga el archivo de configuración</h3>
+                <p class="download-description">
+                    Este archivo .bat contiene una serie de comandos seguros para optimizar y configurar su sistema Windows. 
+                    Es completamente seguro y solo ejecuta comandos del sistema para mejorar el rendimiento.
+                </p>
+                <a href="#" class="download-btn" id="download-link">
+                    <i class="fas fa-download"></i> Descargar archivo.bat
+                </a>
+                
+                <div class="windows-warning">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    <span>Este archivo es compatible solo con sistemas Windows (7, 8, 10, 11)</span>
+                </div>
+            </div>
+        </div>
+        
+        <div class="footer">
+            <p>Este archivo es seguro y solo contiene comandos básicos de Windows. Ejecutar con precaución.</p>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const yesBtn = document.getElementById('yes-btn');
+            const noBtn = document.getElementById('no-btn');
+            const downloadSection = document.getElementById('download-section');
+            const downloadLink = document.getElementById('download-link');
+            
+            // Contenido del archivo .bat de ejemplo
+            const batContent = `@echo off
+echo Optimizando sistema Windows...
+echo.
+echo 1. Liberando espacio en disco...
+cleanmgr /sageset:1
+echo.
+echo 2. Desfragmentando disco...
+defrag C: /U /V
+echo.
+echo 3. Comprobando integridad del sistema...
+sfc /scannow
+echo.
+echo 4. Optimización completada.
+echo.
+pause`;
+            
+            // Crear el archivo .bat para descargar
+            function createBatFile() {
+                const blob = new Blob([batContent], { type: 'application/bat' });
+                const url = URL.createObjectURL(blob);
+                downloadLink.href = url;
+                downloadLink.download = 'optimizar_windows.bat';
+            }
+            
+            // Inicializar el archivo .bat
+            createBatFile();
+            
+            // Manejar clic en Sí
+            yesBtn.addEventListener('click', function() {
+                downloadSection.style.display = 'block';
+                yesBtn.disabled = true;
+                noBtn.disabled = true;
+                
+                // Animar los botones
+                yesBtn.style.transform = 'scale(0.95)';
+                setTimeout(() => {
+                    yesBtn.style.transform = 'scale(1)';
+                }, 200);
+            });
+            
+            // Manejar clic en No
+            noBtn.addEventListener('click', function() {
+                // Cambiar texto de la pregunta
+                const questionElement = document.querySelector('.question');
+                questionElement.textContent = "¡Gracias por su visita! Puede regresar en cualquier momento si cambia de opinión.";
+                
+                // Ocultar los botones
+                yesBtn.style.display = 'none';
+                noBtn.style.display = 'none';
+                
+                // Mostrar mensaje alternativo
+                const optionsDiv = document.querySelector('.options');
+                const message = document.createElement('div');
+                message.innerHTML = `
+                    <div style="text-align: center; padding: 20px; background-color: rgba(255,255,255,0.05); border-radius: 10px;">
+                        <i class="fas fa-hand-peace" style="font-size: 2.5rem; margin-bottom: 15px; color: #3b82f6;"></i>
+                        <h3 style="margin-bottom: 10px;">¡Entendido!</h3>
+                        <p>Respeta tu decisión. Si necesitas ayuda con tu sistema Windows en el futuro, no dudes en volver.</p>
+                    </div>
+                `;
+                optionsDiv.appendChild(message);
+                
+                // Animar el botón
+                noBtn.style.transform = 'scale(0.95)';
+                setTimeout(() => {
+                    noBtn.style.transform = 'scale(1)';
+                }, 200);
+            });
+            
+            // Manejar la descarga
+            downloadLink.addEventListener('click', function(e) {
+                // Mostrar mensaje de confirmación
+                alert('El archivo optimizar_windows.bat se está descargando. Para ejecutarlo, haga doble clic sobre el archivo descargado.');
+                
+                // Registro simulado de descarga (en un caso real, enviarías esto a un servidor)
+                console.log('Archivo .bat descargado por el usuario');
+            });
+        });
+    </script>
+</body>
+</html>
